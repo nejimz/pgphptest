@@ -1,8 +1,8 @@
 @extends('master')
 @section('contents')
     <header>
-        <span class="avatar"><img src="images/users/" alt="" /></span>
-        <h1>Ok!</h1>
-        <p>Nice!</p>
+        <span class="avatar"><img src="images/users/{{ $user->id ?? '' }}.jpg" alt="" /></span>
+        <h1>{{ $user->name ?? '' }}</h1>
+        <p>{{ $user->comments->comment ?? '' }}</p>
     </header>
 @endsection
