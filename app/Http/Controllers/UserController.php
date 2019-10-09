@@ -10,6 +10,8 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
+		#$json = file_get_contents('php://input');
+		#dd($json);
     	if ($request->has('id')) {
 	    	$user = User::with('Comments')->first();
 	    	#dd($user);
