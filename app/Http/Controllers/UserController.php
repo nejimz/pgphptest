@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\User;
 use App\Comments;
+use Validator;
 
 class UserController extends Controller
 {
@@ -17,7 +18,7 @@ class UserController extends Controller
 	    	if (is_null($user)) {
 	    		abort(404);
 	    	}
-	    	
+
 	    	$data = compact('user');
 
 	    	return view('index', $data);
@@ -38,11 +39,22 @@ class UserController extends Controller
 			return response()->json(['Invalid JSON!'], 422);
 		}*/
 
-		$request->validate([
+		/*$val = $request->validate([
 			'id' => 'required|numeric|unique:users,id',
 			'password' => 'required|same:720DF6C2482218518FA20FDC52D4DED7ECC043AB',
 			'comments' => 'required'
+		]);*/
+
+		$val = Validator::make($request->all(), [
+			'id' => 'required|numeric|exists:users,id',
+			'password' => 'required|in:720DF6C2482218518FA20FDC52D4DED7ECC043AB',
+			'comments' => 'required'
 		]);
+		
+		if ($val->fails()) {
+			return response()->json($val->messages(), 200);
+		}
+
 		$input = $request->only('comments');
 		Comments::whereUserId($request->id)->update($input);
 
