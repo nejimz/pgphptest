@@ -13,7 +13,11 @@ class UserController extends Controller
 		#$json = file_get_contents('php://input');
 		#dd($json);
     	if ($request->has('id')) {
-	    	$user = User::with('Comments')->first();
+	    	$user = User::with('Comments')->whereId($request->id)->first();
+
+	    	if (is_null($user)) {
+	    		abort(404);
+	    	}
 	    	#dd($user);
 	    	$data = compact('user');
 
