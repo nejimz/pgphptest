@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'UserController@index')->name('landingPage');
+Route::post('/', 'UserController@index_post')->name('landingPagePost');

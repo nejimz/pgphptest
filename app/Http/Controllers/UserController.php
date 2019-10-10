@@ -10,8 +10,6 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-		#$json = file_get_contents('php://input');
-		#dd($json);
     	if ($request->has('id')) {
 	    	$user = User::with('Comments')->whereId($request->id)->first();
 
@@ -25,5 +23,26 @@ class UserController extends Controller
     	}
     	
     	abort(404);
+    }
+
+    public function index_post(Request $request)
+    {
+    	if (!$request->has('json')) {
+    		return response()->json(['JSON is required!'], 422);
+    	}
+
+		$json = json_decode($request->json, true);
+
+		if (is_null($json)) {
+			return response()->json(['Invalid JSON!'], 422);
+		}
+
+		$request->validate([
+			'id' => 'required',
+			'password' => 'required|same:720DF6C2482218518FA20FDC52D4DED7ECC043AB',
+			'comments' => 'required'
+		]);
+
+		return response()->json(['Invalid JSON!'], 422);
     }
 }
